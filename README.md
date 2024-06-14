@@ -1,4 +1,4 @@
-#Marnie's SQL repository - continually growing.
+# Marnie's SQL repository - continually growing.
 
 **Welcome** to my SQL portfolio.
 
