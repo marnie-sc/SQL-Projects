@@ -1,0 +1,33 @@
+#A database custom built by Charlotte Chaze <3 (I have used only part of the database for my query.)
+#Many teachers are leaving their jobs and getting hired as data analysts at EdTech companies. This database contains information that an EdTech company like McGraw-Hill would have. 
+#This example data is fabricated for demonstration purposes.
+
+CREATE TABLE Courses (
+    CourseID INTEGER PRIMARY KEY,
+    CourseName TEXT,
+    Subject TEXT,
+    GradeLevel TEXT,
+	Current TEXT);
+
+CREATE TABLE Textbooks (
+    TextbookID INTEGER PRIMARY KEY,
+    Title TEXT,
+    PublicationYear INTEGER,
+    CourseID INTEGER);
+
+#I created a table to show the name and publication date of textbooks that are currently in use.  
+#I have identified the books by their publication date and indicated if they are to be kept or replaced.  
+#Textbooks that have a publication date of 2020 or later will be kept, and textbooks with a publication date before 2020 will be replaced.  
+#I have grouped the books by name.
+
+SELECT Title, PublicationYear, Subject,
+CASE WHEN PublicationYear > 2020 THEN 'Keep'
+WHEN PublicationYear < 2020 THEN 'Replace'
+ELSE 'Keep'
+END AS Status
+FROM Textbooks
+
+INNER JOIN Courses
+ON Textbooks.CourseID = Textbooks.CourseID
+WHERE Current='Yes'
+GROUP BY Title;
