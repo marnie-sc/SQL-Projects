@@ -1,0 +1,26 @@
+# For this project, I used Spotify data of the top 50 songs with various column items.  
+# I downloaded the data to SQLite Studio and then ran the following queries.
+
+# What is the most popular song.  Include the name of the song, the artist, and the rank.
+SELECT track_name Song, artist_name Artist, popularity Rank
+FROM BIT_DB.SpotifyData
+ORDER BY popularity desc LIMIT 1;
+
+# What are the 30 most danceable songs?
+SELECT track_name Song, artist_name Artist, danceability as 'Dance Rank'
+FROM BIT_DB.SpotifyData
+ORDER BY danceability asc LIMIT 30;
+
+# What is the length, in minutes, for the 30 most danceable songs, rounded to the nearest two decimal places?
+SELECT track_name Song, artist_name Artist, danceability Danceability, printf('%.2f',ROUND(duration_ms/1000.0/60, 2)) as 'Length in Minutes'
+FROM BIT_DB.SpotifyData
+ORDER BY danceability desc LIMIT 30;
+
+# Look up all songs from the top 50 that are in the keys of either C, F, or G.  This was my favorite query.  The keys to the songs follow
+# the Circle of Fifths, so that the key of C=0, F=11, and G=1, although there is no differentiation between major and minor keys for this exercise.
+SELECT track_name Song, artist_name Artist, song_key Key
+FROM BIT_DB.SpotifyData
+WHERE song_key = '0'
+OR song_key = '11'
+OR song_key = '1'
+ORDER BY track_name asc;
