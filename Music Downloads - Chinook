@@ -1,0 +1,30 @@
+#This database contains company sales data and includes the following tables:
+#media_types, genres, playlists, playlist_track, tracks, artists, invoices,
+#invoice_items, albums, customers, and employees.
+
+#The first query below show the country that has the most customers. The display
+#shows the number of customers in each country from which there was a purchase,
+#and the countries are listed by those with the most customers to those with the least.
+
+SELECT Country, COUNT(Country) AS "Customers in Country"
+FROm customers
+GROUP BY Country
+ORDER BY "Customers in Country" DESC;
+
+#The next query below shows the most popular genre for each country.  This required
+#multiple joins, and the dispaly shows the most popular genre for each country with 
+#the countires listed in alphabetical order.
+
+SELECT genres.Name as Genre, genres.GenreId, customers.Country, COUNT(customers.country) AS "Customers in Country"
+FROM genres
+RIGHT JOIN tracks
+ON genres.GenreId = tracks.GenreId
+RIGHT JOIN invoice_items
+ON tracks.TrackId = invoice_items.TrackId
+RIGHT JOIN invoices
+ON invoice_items.InvoiceId = invoices.InvoiceId
+RIGHT JOIN customers
+ON invoices.CustomerId = customers.CustomerId
+GROUP BY customers.Country
+ORDER BY genres.Name;
+
