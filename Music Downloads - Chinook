@@ -49,3 +49,45 @@ GROUP BY
     e2.ReportsTo
 ORDER BY "Total Sales" DESC
 LIMIT 1;
+
+#The query below shows the customers from Brazil and their invoices.
+
+SELECT c.FirstName AS "First Name", c.LastName AS "Last Name", i.InvoiceId AS "Invoice ID", i.InvoiceDate AS "Date of Invoice", i.BillingCountry AS "Billing Country"
+FROM customers c
+JOIN invoices i
+ON c.CustomerId = i.CustomerId
+WHERE c.Country = "Brazil";
+
+#The query below shows the employees that are also Sale Agents.  This included two tables.
+
+SELECT e.EmployeeId AS "Employee ID", e.FirstName AS "First Name", e.LastName AS "Last Name"
+FROM employees e
+JOIN customers c
+ON e.EmployeeId = c.SupportRepId
+WHERE e.EmployeeId = c.SupportRepId
+GROUP BY e.EmployeeId;
+
+#The query below shows the Invoice Totals for all customers and dispalys the amount, customer names, and sales agent name.
+#This uses the CONCAT function, which in SQLiteStudio is managed by the || operator.
+
+SELECT ROUND(ii.UnitPrice*Quantity,2) AS "Invoice Total", c.FirstName || ' ' || c.LastName AS "Customer Name", c.Country, e.LastName AS "Sales Agent"
+FROM invoice_items ii
+JOIN invoices i
+ON ii.InvoiceId = i.InvoiceId
+JOIN customers c
+ON i.CustomerId = c.CustomerId
+Join employees e
+ON c.SupportRepId = e.EmployeeId
+ORDER BY c.LastName;
+
+#One more query to show the total sales for 2009 only, rounded off to and showing the penny. Both queries below produce the same result.
+#The strftime function, when used with %Y, extracts the given year from the data.
+
+SELECT ROUND(SUM(Total),2) AS "Total Sale"
+FROM invoices
+WHERE strftime('%Y',InvoiceDate) = '2009';
+
+SELECT ROUND(SUM(Total),2) AS "Total Sale"
+FROM invoices
+WHERE InvoiceDate LIKE '2009%';
+
