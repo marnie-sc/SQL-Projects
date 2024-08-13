@@ -28,7 +28,24 @@ ON invoices.CustomerId = customers.CustomerId
 GROUP BY customers.Country
 ORDER BY genres.Name;
 
-#The next query below shows the company employee with the most sales. The display shows
-#the total amount on the combined invoices for the employee, the name of the employee,
-#and the name of the person that employee reports to.
+#The next query below shows the company employee with the most sales, rounded to two decimal places. The display shows
+#the total amount of the combined invoices for the employee, the name of the employee, and the ID of the person the
+#employee reports to.  All are displayed with modified, clean column headings.
 
+SELECT ROUND(SUM(ii.Quantity * ii.UnitPrice),2) AS "Total Sales", e1.FirstName AS "Employee First Name", e1.LastName AS "Employee Last Name", EmployeeId AS "Employee ID", ReportsTo as "Reports To" 
+FROM invoice_items ii
+JOIN invoices i
+ON ii.InvoiceId = i.InvoiceId
+JOIN customers c
+ON i.CustomerId = c.CustomerId
+JOIN employees e1
+ON c.SupportRepId = e1.EmployeeId
+LEFT JOIN employees e2
+ON e1.ReportsTo = e2.EmployeeId
+GROUP BY 
+    e1.EmployeeId,
+    e1.FirstName,
+    e1.LastName,
+    e2.ReportsTo
+ORDER BY "Total Sales" DESC
+LIMIT 1;
