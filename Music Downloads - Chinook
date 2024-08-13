@@ -28,3 +28,7 @@ ON invoices.CustomerId = customers.CustomerId
 GROUP BY customers.Country
 ORDER BY genres.Name;
 
+#The next query below shows the company employee with the most sales. The display shows
+#the total amount on the combined invoices for the employee, the name of the employee,
+#and the name of the person that employee reports to.
+
